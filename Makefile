@@ -58,7 +58,7 @@ $(NAME_B): $(OBJ_B) $(LIBFT) $(MLX)
 
 $(LIBFT):
 	@echo "$(CYAN)Building libft...$(NC)"
-	@make -C libft
+	@make --no-print-directory -C libft
 
 $(MLX_DIR):
 	@echo "$(YELLOW)Cloning MiniLibX...$(NC)"
