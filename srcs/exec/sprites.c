@@ -48,6 +48,8 @@ int	animation_doors(t_data *data)
 {
 	int	i;
 
+	if (!data->doors)
+		return (0);
 	i = 0;
 	while (i < data->doors->nb)
 	{
@@ -77,6 +79,8 @@ int	is_near_player(t_data *data)
 	float	dist_y;
 	float	dist;
 
+	if (!data->doors)
+		return (0);
 	i = 0;
 	while (i < data->doors->nb)
 	{

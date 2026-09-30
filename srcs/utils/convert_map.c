@@ -12,7 +12,27 @@
 
 #include "../../cub.h"
 
-static int	ft_convert_line(char *line, int **tab, int i)
+static int	ft_get_max_width(char **map)
+{
+	int	max_width;
+	int	i;
+	int	len;
+
+	max_width = 0;
+	i = 0;
+	while (map[i])
+	{
+		len = 0;
+		while (map[i][len] && map[i][len] != '\n')
+			len++;
+		if (len > max_width)
+			max_width = len;
+		i++;
+	}
+	return (max_width);
+}
+
+static int	ft_convert_line(char *line, int **tab, int i, int width)
 {
 	int	j;
 
@@ -30,6 +50,11 @@ static int	ft_convert_line(char *line, int **tab, int i)
 			tab[i][j] = 2;
 		j++;
 	}
+	while (j < width)
+	{
+		tab[i][j] = 2;
+		j++;
+	}
 	return (1);
 }
 
@@ -37,21 +62,23 @@ int	**ft_convert_map(char **map)
 {
 	int	**tab;
 	int	i;
+	int	width;
 
+	width = ft_get_max_width(map);
 	tab = ft_calloc(ft_tab_len(map), sizeof(int *));
 	if (!tab)
 		return (NULL);
 	i = 0;
 	while (map[i])
 	{
-		tab[i] = ft_calloc(ft_strlen(map[i]), sizeof(int));
+		tab[i] = ft_calloc(width, sizeof(int));
 		if (!tab[i])
 		{
 			while (i--)
 				free(tab[i]);
 			return (NULL);
 		}
-		ft_convert_line(map[i], tab, i);
+		ft_convert_line(map[i], tab, i, width);
 		i++;
 	}
 	return (tab);

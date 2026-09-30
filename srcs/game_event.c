@@ -29,9 +29,9 @@ static int	ft_play(t_data *data)
 }
 
 // cette fonction permet de cacher le curseur de la souris mais elle leak
-// mlx_mouse_hide(data->mlx->mlx, data->mlx->win);
 void	ft_display_game(t_data *data)
 {
+	mlx_mouse_hide(data->mlx->mlx, data->mlx->win); // function form minilibx (can leak)
 	data->exit = 1;
 	mlx_hook(data->mlx->win, 17, 1L << 17, ft_free_data, data);
 	mlx_hook(data->mlx->win, 2, 1L << 0, key_press, data);

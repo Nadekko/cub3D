@@ -14,7 +14,7 @@
 
 static int	ft_init_matrix(t_data *data)
 {
-	data->map->width = ft_strlen(data->map->map_tab[0]);
+	data->map->width = ft_longest_line(data->map->map_tab);
 	data->map->height = ft_tab_len(data->map->map_tab);
 	data->map->map_int = ft_convert_map(data->map->map_tab);
 	if (mlx_window_init(data))
