@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub.h                                              :+:      :+:    :+:   */
+/*   cub_bonus.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ede-cola <ede-cola@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:59:17 by ede-cola          #+#    #+#             */
-/*   Updated: 2025/03/28 15:13:44 by ede-cola         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:58:38 by ede-cola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_H
-# define CUB_H
+#ifndef CUB_BONUS_H
+# define CUB_BONUS_H
 
 # include "./minilibx-linux/mlx.h"
 # include "libft/libft.h"
@@ -19,12 +19,12 @@
 
 # define HEIGHT 668 // 768
 # define WIDTH 1024
-# define IMG_COUNT 6
+# define IMG_COUNT 21
 # define PIXEL 48
 # define FOV 0.66
 // MOVE
 # define ROT_SPEED 0.02
-# define MOVE_SPEED 0.04
+# define MOVE_SPEED 0.06
 # define KEY_W 119
 # define KEY_A 97
 # define KEY_S 115
@@ -41,9 +41,13 @@
 # define SO_TEXTURE 1
 # define WE_TEXTURE 2
 # define EA_TEXTURE 3
-# define PLAYER 4
-# define BACKGROUND 5
-# define MINI_MAP 6
+# define BACKGROUND 4
+# define MINI_MAP 5
+# define DOOR 16
+# define PLAYER 6
+// MINI_MAP
+# define MINISIZE 200
+# define TILE_SIZE 10
 
 typedef struct s_color
 {
@@ -51,12 +55,6 @@ typedef struct s_color
 	int			green;
 	int			blue;
 }				t_color;
-
-typedef struct s_size
-{
-	int			screen_width;
-	int			screen_height;
-}				t_size;
 
 typedef struct s_map
 {
@@ -84,6 +82,17 @@ typedef struct s_player
 	double		next_y;
 	double		next_x;
 }				t_player;
+
+typedef struct s_doors
+{
+	double		x;
+	double		y;
+	int			is_open;
+	int			has_been_open;
+	int			nb;
+	int			anim_frame;
+	double		dist_to_player;
+}				t_doors;
 
 typedef struct s_mlx
 {
@@ -138,9 +147,13 @@ typedef struct s_data
 	t_mlx		*mlx;
 	t_player	*player;
 	t_raycast	*raycast;
+	t_doors		*doors;
 	t_move		move;
 	t_color		*texture_f;
 	t_color		*texture_c;
+	int			anim_frame;
+	int			anim_running;
+	int			exit;
 	char		*texture_n;
 	char		*texture_s;
 	char		*texture_e;
@@ -160,8 +173,8 @@ int				ft_check_data(t_data *data);
 int				ft_check_one_extension(char *map);
 void			ft_skip_whitespaces(char **file, int *i, int *j);
 int				ft_get_textures(char **file, t_data *data, int i, int j);
-int				ft_get_textures_part2(char **file, t_data *data, int i, int j);
 int				ft_set_textures_struct(t_data *data, char *file, char zone);
+int				ft_get_textures_part2(char **file, t_data *data, int i, int j);
 
 /*		PARSE_MAP*/
 int				ft_check_map_closed(char **map);
@@ -175,6 +188,7 @@ int				ft_clean_init_raycast(t_data *data);
 void			ft_clean_init_move(t_data *data);
 int				mlx_start(t_data *data);
 int				mlx_window_init(t_data *data);
+int				ft_clean_init_elements(t_data *data);
 // int				ft_clean_init_mlx(t_data *data);
 
 /*		UTILS		*/
@@ -182,17 +196,20 @@ size_t			ft_longest_line(char **map);
 int				**ft_convert_map(char **map);
 char			*ft_get_textures_path(char *path, char *entry);
 char			*ft_join_to_comb_empty(char *line, size_t longest_line);
+int				ft_counter(char **map, char element);
 
 /*		FREE		*/
 int				ft_free_img(t_mlx *mlx, int n);
 int				ft_free_data(t_data *data);
-int				ft_free_exit(t_data *data);
+// int				ft_free_exit(t_data *data);
 void			ft_free_mlx(t_mlx *mlx);
+void			ft_free_elements(t_data *data);
 
 /*		CHECK_TEXTURES		*/
 int				ft_check_textures(t_data *data);
 int				ft_check_rgb(t_data *data);
 t_img			*ft_init_img(t_mlx *mlx, char *path);
+t_img			*ft_init_new_img(t_mlx *mlx, int width, int height);
 
 /*		CONVERT_MAP			*/
 int				**ft_convert_map(char **map);
@@ -206,6 +223,7 @@ int				ft_get_player_dir(t_data *data);
 /*		DRAW				*/
 void			draw_player_to_image(t_data *data);
 void			put_texture(t_data *data, int i);
+
 /*		DRAW UTILS			*/
 void			put_pixel(t_img *img, int x, int y, int color);
 void			put_img_to_img(t_data *data, t_img src, int x, int y);
@@ -219,7 +237,14 @@ int				key_release(int keycode, t_data *data);
 int				ft_rotate(t_data *data);
 int				ft_move(t_data *data);
 
-int				ft_play(t_data *data);
 void			ft_display_game(t_data *data);
+int				mouse_move(int x, int y, t_data *data);
+
+/*		MINI_MAP			*/
+void			load_mini_map(t_data *data);
+
+int				animation_paws(t_data *data);
+int				animation_doors(t_data *data);
+int				mouse_press(int button, int x, int y, t_data *data);
 
 #endif
