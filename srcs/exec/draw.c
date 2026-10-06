@@ -18,6 +18,8 @@ static void	door_gestion(t_data *data)
 	int	r_map_x;
 	int	r_map_y;
 
+	if (!data->doors)
+		return ;
 	i = 0;
 	r_map_x = data->raycast->map_x;
 	r_map_y = data->raycast->map_y;
@@ -72,25 +74,22 @@ static void	set_texture(t_data *data)
 	data->raycast->wall_x -= floor(data->raycast->wall_x);
 }
 
-static void	put_shade(t_data *data, int i, int y)
+void	put_shade(t_data *data, int i, int y)
 {
-	double			shade;
+	t_img			*dst;
 	unsigned int	color;
-	double			r;
-	double			g;
-	double			b;
+	double			shade;
 
-	shade = 1.0 / (1.0 + data->raycast->wall_dist * 0.2);
-	color = get_pixel(*data->mlx->img[data->raycast->texture],
+	color = get_pixel(data->mlx->img[data->raycast->texture],
 			data->raycast->tex_x, data->raycast->tex_y);
-	if (color != 0xFF000000)
-	{
-		r = ((color >> 16) & 0xFF) * shade;
-		g = ((color >> 8) & 0xFF) * shade;
-		b = (color & 0xFF) * shade;
-		color = rgb_to_int(r, g, b);
-		put_pixel(data->mlx->img[BACKGROUND], i, y, color);
-	}
+	if (color == 0xFF000000)
+		return ;
+	shade = data->raycast->shade;
+	color = rgb_to_int(((color >> 16) & 0xFF) * shade,
+			((color >> 8) & 0xFF) * shade, (color & 0xFF) * shade);
+	dst = data->mlx->img[BACKGROUND];
+	*(unsigned int *)(dst->addr + y * dst->line_len
+			+ i * (dst->bpp / 8)) = color;
 }
 
 void	put_texture(t_data *data, int i)

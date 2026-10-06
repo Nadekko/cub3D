@@ -16,9 +16,11 @@ static void	algo_dda(t_data *data)
 {
 	int	hit;
 	int	map_y;
+	int	max_iter;
 
 	hit = 0;
-	while (!hit)
+	max_iter = 0;
+	while (!hit && max_iter < 1000)
 	{
 		if (data->raycast->side_x < data->raycast->side_y)
 		{
@@ -32,11 +34,16 @@ static void	algo_dda(t_data *data)
 			data->raycast->map_y += data->raycast->step_y;
 			data->raycast->side = 1;
 		}
+		if (data->raycast->map_x < 0 || data->raycast->map_y < 0
+			|| data->raycast->map_x >= data->map->width
+			|| data->raycast->map_y >= data->map->height)
+			break ;
 		map_y = data->raycast->map_y;
 		if (data->map->map_int[map_y][data->raycast->map_x] == 1
 			|| data->map->map_int[map_y][data->raycast->map_x] == 4
 			|| data->map->map_int[map_y][data->raycast->map_x] == 5)
 			hit = 1;
+		max_iter++;
 	}
 }
 
@@ -49,6 +56,7 @@ static void	compute_wall_dist(t_data *data)
 		data->raycast->wall_dist = (data->raycast->map_y - data->player->pos_y
 				+ (1 - data->raycast->step_y) / 2) / data->raycast->ray_y;
 	data->raycast->line_height = (int)(HEIGHT / data->raycast->wall_dist);
+	data->raycast->shade = 1.0 / (1.0 + data->raycast->wall_dist * 0.2);
 	data->raycast->draw_start = -data->raycast->line_height / 2 + HEIGHT / 2;
 	if (data->raycast->draw_start < 0)
 		data->raycast->draw_start = 0;
@@ -57,32 +65,13 @@ static void	compute_wall_dist(t_data *data)
 		data->raycast->draw_end = HEIGHT;
 }
 
-void	draw_sprites(t_data *data, int i, int y)
-{
-	double			shade;
-	unsigned int	color;
-	double			r;
-	double			g;
-	double			b;
-
-	shade = 1.0 / (1.0 + data->raycast->wall_dist * 0.2);
-	color = get_pixel(*data->mlx->img[data->raycast->texture],
-			data->raycast->tex_x, data->raycast->tex_y);
-	if (color != 0xFF000000)
-	{
-		r = ((color >> 16) & 0xFF) * shade;
-		g = ((color >> 8) & 0xFF) * shade;
-		b = (color & 0xFF) * shade;
-		color = rgb_to_int(r, g, b);
-		put_pixel(data->mlx->img[BACKGROUND], i, y, color);
-	}
-}
-
 void	draw_doors(t_data *data, int i)
 {
 	int		y;
 	double	step;
-
+	
+	if (data->raycast->texture < DOOR || data->raycast->texture > DOOR + 4)
+		return ;
 	y = data->raycast->draw_start;
 	data->raycast->tex_x = (int)(data->raycast->wall_x * (double)PIXEL);
 	step = (double)PIXEL / data->raycast->line_height;
@@ -97,7 +86,7 @@ void	draw_doors(t_data *data, int i)
 		data->raycast->tex_p += step;
 		if (data->raycast->texture >= DOOR && data->raycast->texture <= DOOR
 			+ 4)
-			draw_sprites(data, i, y);
+			put_shade(data, i, y);
 		y++;
 	}
 }
@@ -113,6 +102,7 @@ void	ft_raycasting(t_data *data)
 		algo_dda(data);
 		compute_wall_dist(data);
 		put_texture(data, i);
+		draw_background_column(data, i);
 		draw_doors(data, i);
 		i++;
 	}

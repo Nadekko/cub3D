@@ -12,10 +12,10 @@
 
 #include "../../cub.h"
 
-unsigned int	get_pixel(t_img img, int x, int y)
+unsigned int	get_pixel(t_img *img, int x, int y)
 {
-	return (*(unsigned int *)((img.addr + (y * img.line_len)
-			+ (x * img.bpp / 8))));
+	return (*(unsigned int *)(img->addr + y * img->line_len
+		+ x * (img->bpp / 8)));
 }
 
 //copy the pixel on an img
@@ -34,25 +34,29 @@ void	put_pixel(t_img *img, int x, int y, int color)
 		printf("Erreur : put_pixel hors limites (%d, %d)\n", x, y);
 }
 
-//copy an img on another, ignore transparency
-void	put_img_to_img(t_data *data, t_img src, int x, int y)
+//copy the opaque box of an img on the screen, ignore transparency
+void	put_img_to_img(t_data *data, t_img *src)
 {
-	int	j;
-	int	i;
+	t_img			*dst;
+	unsigned int	color;
+	int				x;
+	int				y;
 
-	(void)y;
-	i = 0;
-	while (i < src.width)
+	dst = data->mlx->img[BACKGROUND];
+	y = src->box[1];
+	while (y <= src->box[3])
 	{
-		j = 0;
-		while (j < src.height)
+		x = src->box[0];
+		while (x <= src->box[2])
 		{
-			if (get_pixel(src, i, j) != 0xFF000000)
-				put_pixel(data->mlx->img[BACKGROUND], (x + i), (y + j),
-					get_pixel(src, i, j));
-			j++;
+			color = *(unsigned int *)(src->addr + y * src->line_len
+					+ x * (src->bpp / 8));
+			if (color != 0xFF000000)
+				*(unsigned int *)(dst->addr + y * dst->line_len
+						+ x * (dst->bpp / 8)) = color;
+			x++;
 		}
-		i++;
+		y++;
 	}
 }
 
@@ -78,3 +82,25 @@ green = 0
 blue = 113
 color = (240 * 65536) + (0 * 256) + 113 = 15790361 // hex = 0xF00071;
 */
+
+// //copy an img on another, ignore transparency
+// void	put_img_to_img(t_data *data, t_img src, int x, int y)
+// {
+// 	int	j;
+// 	int	i;
+
+// 	(void)y;
+// 	i = 0;
+// 	while (i < src.width)
+// 	{
+// 		j = 0;
+// 		while (j < src.height)
+// 		{
+// 			if (get_pixel(src, i, j) != 0xFF000000)
+// 				put_pixel(data->mlx->img[BACKGROUND], (x + i), (y + j),
+// 					get_pixel(src, i, j));
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }

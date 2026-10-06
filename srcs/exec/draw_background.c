@@ -12,52 +12,82 @@
 
 #include "../../cub.h"
 
-static void	draw_celing(t_data *data)
+static void	fill_column(t_data *data, int x, int start, int end)
 {
-	int	x;
-	int	y;
-	int	color;
+	t_img	*img;
+	int		color;
 
-	x = 0;
-	color = rgb_to_int(data->texture_c->red,
-			data->texture_c->green, data->texture_c->blue);
-	while (x < WIDTH)
+	img = data->mlx->img[BACKGROUND];
+	while (start < end)
 	{
-		y = 0;
-		while (y < HEIGHT / 2)
-		{
-			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
-			y++;
-		}
-		x++;
+		if (start < HEIGHT / 2)
+			color = data->color_c;
+		else
+			color = data->color_f;
+		*(int *)(img->addr + start * img->line_len
+				+ x * (img->bpp / 8)) = color;
+		start++;
 	}
 }
 
-static void	draw_floor(t_data *data)
+void	draw_background_column(t_data *data, int x)
 {
-	int	x;
-	int	y;
-	int	color;
-
-	x = 0;
-	color = rgb_to_int(data->texture_f->red,
-			data->texture_f->green, data->texture_f->blue);
-	while (x < WIDTH)
+	if (data->raycast->texture >= DOOR && data->raycast->texture <= DOOR + 4)
 	{
-		y = HEIGHT / 2;
-		while (y < HEIGHT)
-		{
-			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
-			y++;
-		}
-		x++;
+		fill_column(data, x, 0, HEIGHT);
+		return ;
 	}
+	fill_column(data, x, 0, data->raycast->draw_start);
+	fill_column(data, x, data->raycast->draw_end, HEIGHT);
 }
 
-int	load_background(t_data *data)
-{
-	ft_raycasting(data);
-	draw_celing(data);
-	draw_floor(data);
-	return (0);
-}
+
+// static void	draw_celing(t_data *data)
+// {
+// 	int	x;
+// 	int	y;
+// 	int	color;
+
+// 	x = 0;
+// 	color = rgb_to_int(data->texture_c->red,
+// 			data->texture_c->green, data->texture_c->blue);
+// 	while (x < WIDTH)
+// 	{
+// 		y = 0;
+// 		while (y < HEIGHT / 2)
+// 		{
+// 			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
+// 			y++;
+// 		}
+// 		x++;
+// 	}
+// }
+
+// static void	draw_floor(t_data *data)
+// {
+// 	int	x;
+// 	int	y;
+// 	int	color;
+
+// 	x = 0;
+// 	color = rgb_to_int(data->texture_f->red,
+// 			data->texture_f->green, data->texture_f->blue);
+// 	while (x < WIDTH)
+// 	{
+// 		y = HEIGHT / 2;
+// 		while (y < HEIGHT)
+// 		{
+// 			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
+// 			y++;
+// 		}
+// 		x++;
+// 	}
+// }
+
+// int	load_background(t_data *data)
+// {
+// 	ft_raycasting(data);
+// 	draw_celing(data);
+// 	draw_floor(data);
+// 	return (0);
+// }

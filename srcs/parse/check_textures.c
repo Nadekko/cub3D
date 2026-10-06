@@ -12,6 +12,44 @@
 
 #include "../../cub.h"
 
+static void	ft_grow_box(t_img *img, int x, int y)
+{
+	if (x < img->box[0])
+		img->box[0] = x;
+	if (y < img->box[1])
+		img->box[1] = y;
+	if (x > img->box[2])
+		img->box[2] = x;
+	if (y > img->box[3])
+		img->box[3] = y;
+}
+
+static void	ft_set_box(t_img *img)
+{
+	int				x;
+	int				y;
+	unsigned int	color;
+
+	img->box[0] = img->width;
+	img->box[1] = img->height;
+	img->box[2] = -1;
+	img->box[3] = -1;
+	y = 0;
+	while (y < img->height && y < HEIGHT)
+	{
+		x = 0;
+		while (x < img->width && x < WIDTH)
+		{
+			color = *(unsigned int *)(img->addr + y * img->line_len
+					+ x * (img->bpp / 8));
+			if (color != 0xFF000000)
+				ft_grow_box(img, x, y);
+			x++;
+		}
+		y++;
+	}
+}
+
 t_img	*ft_init_img(t_mlx *mlx, char *path)
 {
 	t_img	*img;
@@ -26,6 +64,7 @@ t_img	*ft_init_img(t_mlx *mlx, char *path)
 			&img->endian);
 	if (!img->addr)
 		return (mlx_destroy_image(mlx->mlx, img->img), free(img), NULL);
+	ft_set_box(img);
 	return (img);
 }
 

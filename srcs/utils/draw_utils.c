@@ -14,5 +14,13 @@
 
 void	draw_player_to_image(t_data *data)
 {
-	put_img_to_img(data, *data->mlx->img[PLAYER], 0, 0);
+	put_img_to_img(data, data->mlx->img[PLAYER + data->anim_frame]);
+}
+
+long	get_time_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }

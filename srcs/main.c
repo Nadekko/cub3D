@@ -27,6 +27,10 @@ static int	ft_init_matrix(t_data *data)
 		return (ft_free_data(data),
 			ft_putendl_fd("Error no player or error initializing elements",
 				2), 1);
+	data->color_c = rgb_to_int(data->texture_c->red, data->texture_c->green,
+			data->texture_c->blue);
+	data->color_f = rgb_to_int(data->texture_f->red, data->texture_f->green,
+			data->texture_f->blue);
 	ft_display_game(data);
 	ft_free_data(data);
 	return (0);

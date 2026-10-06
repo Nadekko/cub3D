@@ -20,6 +20,7 @@ static void	ft_set_doors(t_data *data, t_doors *door, int k, int j)
 	door->has_been_open = 0;
 	door->nb = ft_counter(data->map->map_tab, 'D');
 	door->anim_frame = 0;
+	door->last = 0;
 	door->dist_to_player = 0;
 }
 

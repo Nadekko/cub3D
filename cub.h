@@ -16,6 +16,7 @@
 # include "./minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include <math.h>
+# include <sys/time.h>
 
 # define HEIGHT 668 // 768
 # define WIDTH 1024
@@ -47,7 +48,11 @@
 # define PLAYER 6
 // MINI_MAP
 # define MINISIZE 200
-# define TILE_SIZE 10
+# define MINI_SCALE 30
+# define MINI_PLAYER 10
+// ANIMATION
+# define PAW_FRAME_MS 50
+# define DOOR_FRAME_MS 100
 
 typedef struct s_color
 {
@@ -73,6 +78,7 @@ typedef struct s_img
 	int			line_len;
 	int			width;
 	int			height;
+	int			box[4];
 }				t_img;
 
 typedef struct s_player
@@ -91,6 +97,7 @@ typedef struct s_doors
 	int			has_been_open;
 	int			nb;
 	int			anim_frame;
+	long		last;
 	double		dist_to_player;
 }				t_doors;
 
@@ -128,7 +135,7 @@ typedef struct s_raycast
 	int			tex_y;
 	double		tex_p;
 	double		wall_x;
-
+	double		shade;
 }				t_raycast;
 
 typedef struct s_move
@@ -153,6 +160,9 @@ typedef struct s_data
 	t_color		*texture_c;
 	int			anim_frame;
 	int			anim_running;
+	long		anim_last;
+	int			color_c;
+	int			color_f;
 	int			exit;
 	char		*texture_n;
 	char		*texture_s;
@@ -222,14 +232,18 @@ int				ft_get_player_dir(t_data *data);
 
 /*		DRAW				*/
 void			draw_player_to_image(t_data *data);
+long			get_time_ms(void);
+void			draw_background_column(t_data *data, int x);
 void			put_texture(t_data *data, int i);
 
 /*		DRAW UTILS			*/
 void			put_pixel(t_img *img, int x, int y, int color);
-void			put_img_to_img(t_data *data, t_img src, int x, int y);
-int				load_background(t_data *data);
+void			put_img_to_img(t_data *data, t_img *src);
+// void			put_img_to_img(t_data *data, t_img src, int x, int y);
+// int				load_background(t_data *data);
 int				rgb_to_int(int r, int g, int b);
-unsigned int	get_pixel(t_img img, int x, int y);
+unsigned int	get_pixel(t_img *img, int x, int y);
+void			put_shade(t_data *data, int i, int y);
 
 /*		MOVE				*/
 int				key_press(int keycode, t_data *data);

@@ -15,11 +15,10 @@
 static int	ft_play(t_data *data)
 {
 	animation_doors(data);
-	load_background(data);
 	ft_raycasting(data);
 	load_mini_map(data);
-	draw_player_to_image(data);
 	animation_paws(data);
+	draw_player_to_image(data);
 	ft_move(data);
 	mlx_put_image_to_window(data->mlx->mlx, data->mlx->win,
 		data->mlx->img[BACKGROUND]->img, 0, 0);

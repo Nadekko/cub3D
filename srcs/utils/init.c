@@ -27,6 +27,9 @@ int	ft_clean_init_data(t_data *data)
 	data->texture_e = NULL;
 	data->anim_frame = 0;
 	data->anim_running = 0;
+	data->anim_last = 0;
+	data->color_c = 0;
+	data->color_f = 0;
 	data->exit = 0;
 	return (0);
 }
