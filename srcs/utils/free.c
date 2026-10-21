@@ -56,6 +56,7 @@ int	ft_free_data(t_data *data)
 		if (data->map->map_int)
 			ft_free_int_tab(data);
 		ft_free_tab(data->map->map_tab);
+		free(data->map->seen);
 		free(data->map);
 	}
 	if (data->mlx)

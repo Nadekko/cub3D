@@ -89,8 +89,5 @@ int	ft_check_textures(t_data *data)
 	data->mlx->img[BACKGROUND] = ft_init_new_img(data->mlx, WIDTH, HEIGHT);
 	if (!data->mlx->img[BACKGROUND])
 		return (1);
-	data->mlx->img[MINI_MAP] = ft_init_new_img(data->mlx, MINISIZE, MINISIZE);
-	if (!data->mlx->img[MINI_MAP])
-		return (1);
 	return (ft_check_sprites_player(data));
 }

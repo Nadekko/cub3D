@@ -31,6 +31,8 @@ int	ft_clean_init_data(t_data *data)
 	data->color_c = 0;
 	data->color_f = 0;
 	data->exit = 0;
+	ft_bzero(&data->hud, sizeof(t_hud));
+	data->hud.show = 1;
 	return (0);
 }
 
@@ -54,6 +56,7 @@ void	ft_clean_init_move(t_data *data)
 	data->move.d = 0;
 	data->move.l = 0;
 	data->move.r = 0;
+	data->move.last = 0;
 }
 
 int	mlx_start(t_data *data)

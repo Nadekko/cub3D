@@ -12,82 +12,47 @@
 
 #include "../../cub.h"
 
+// floor/ceiling: precomputed color of the row, then vignette
 static void	fill_column(t_data *data, int x, int start, int end)
 {
-	t_img	*img;
-	int		color;
+	t_img			*img;
+	unsigned int	c;
+	int				k;
 
 	img = data->mlx->img[BACKGROUND];
 	while (start < end)
 	{
-		if (start < HEIGHT / 2)
-			color = data->color_c;
-		else
-			color = data->color_f;
-		*(int *)(img->addr + start * img->line_len
-				+ x * (img->bpp / 8)) = color;
+		c = data->amb.bg[start];
+		k = data->amb.vig_x[x] * data->amb.vig_y[start] >> 8;
+		*(unsigned int *)(img->addr + start * img->line_len
+				+ x * (img->bpp / 8)) = (((c >> 16 & 0xFF) * k >> 8) << 16)
+			| (((c >> 8 & 0xFF) * k >> 8) << 8) | ((c & 0xFF) * k >> 8);
 		start++;
 	}
 }
 
 void	draw_background_column(t_data *data, int x)
 {
-	if (data->raycast->texture >= DOOR && data->raycast->texture <= DOOR + 4)
-	{
-		fill_column(data, x, 0, HEIGHT);
-		return ;
-	}
 	fill_column(data, x, 0, data->raycast->draw_start);
 	fill_column(data, x, data->raycast->draw_end, HEIGHT);
 }
 
+// darkens the screen edges, x256 factors (separable: vig_x * vig_y)
+void	init_vignette(t_data *data)
+{
+	double	n;
+	int		i;
 
-// static void	draw_celing(t_data *data)
-// {
-// 	int	x;
-// 	int	y;
-// 	int	color;
-
-// 	x = 0;
-// 	color = rgb_to_int(data->texture_c->red,
-// 			data->texture_c->green, data->texture_c->blue);
-// 	while (x < WIDTH)
-// 	{
-// 		y = 0;
-// 		while (y < HEIGHT / 2)
-// 		{
-// 			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
-// 			y++;
-// 		}
-// 		x++;
-// 	}
-// }
-
-// static void	draw_floor(t_data *data)
-// {
-// 	int	x;
-// 	int	y;
-// 	int	color;
-
-// 	x = 0;
-// 	color = rgb_to_int(data->texture_f->red,
-// 			data->texture_f->green, data->texture_f->blue);
-// 	while (x < WIDTH)
-// 	{
-// 		y = HEIGHT / 2;
-// 		while (y < HEIGHT)
-// 		{
-// 			put_pixel(data->mlx->img[BACKGROUND], x, y, color);
-// 			y++;
-// 		}
-// 		x++;
-// 	}
-// }
-
-// int	load_background(t_data *data)
-// {
-// 	ft_raycasting(data);
-// 	draw_celing(data);
-// 	draw_floor(data);
-// 	return (0);
-// }
+	i = -1;
+	while (++i < WIDTH)
+	{
+		n = (i - WIDTH / 2.0) / (WIDTH / 2.0);
+		data->amb.vig_x[i] = (int)(256 * (1.0 - VIGNETTE * n * n));
+	}
+	i = -1;
+	while (++i < HEIGHT)
+	{
+		n = (i - HEIGHT / 2.0) / (HEIGHT / 2.0);
+		data->amb.vig_y[i] = (int)(256 * (1.0 - VIGNETTE * n * n));
+	}
+}

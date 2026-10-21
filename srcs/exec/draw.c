@@ -12,34 +12,6 @@
 
 #include "../../cub.h"
 
-static void	door_gestion(t_data *data)
-{
-	int	i;
-	int	r_map_x;
-	int	r_map_y;
-
-	if (!data->doors)
-		return ;
-	i = 0;
-	r_map_x = data->raycast->map_x;
-	r_map_y = data->raycast->map_y;
-	while (i < data->doors->nb)
-	{
-		if (data->doors[i].is_open == 1 && data->doors[i].anim_frame <= 4
-			&& !data->doors[i].has_been_open
-			&& data->map->map_int[r_map_y][r_map_x] == 5)
-		{
-			data->raycast->texture = DOOR + data->doors[i].anim_frame;
-			break ;
-		}
-		else if (data->map->map_int[r_map_y][r_map_x] == 4
-			&& (data->doors[i].is_open == 0
-				|| data->doors[i].has_been_open))
-			data->raycast->texture = DOOR;
-		i++;
-	}
-}
-
 static void	set_texture2(t_data *data)
 {
 	if (data->raycast->side == 0)
@@ -60,9 +32,9 @@ static void	set_texture2(t_data *data)
 
 static void	set_texture(t_data *data)
 {
-	if (data->map->map_int[data->raycast->map_y][data->raycast->map_x] == 4
-		|| data->map->map_int[data->raycast->map_y][data->raycast->map_x] == 5)
-		door_gestion(data);
+	if (data->map->map_int[data->raycast->map_y][data->raycast->map_x] >= 4
+		&& data->map->map_int[data->raycast->map_y][data->raycast->map_x] <= 6)
+		set_door_texture(data);
 	else
 		set_texture2(data);
 	if (data->raycast->side == 0)
@@ -78,18 +50,14 @@ void	put_shade(t_data *data, int i, int y)
 {
 	t_img			*dst;
 	unsigned int	color;
-	double			shade;
 
 	color = get_pixel(data->mlx->img[data->raycast->texture],
 			data->raycast->tex_x, data->raycast->tex_y);
 	if (color == 0xFF000000)
 		return ;
-	shade = data->raycast->shade;
-	color = rgb_to_int(((color >> 16) & 0xFF) * shade,
-			((color >> 8) & 0xFF) * shade, (color & 0xFF) * shade);
 	dst = data->mlx->img[BACKGROUND];
 	*(unsigned int *)(dst->addr + y * dst->line_len
-			+ i * (dst->bpp / 8)) = color;
+			+ i * (dst->bpp / 8)) = shade_pixel(data, color, i, y);
 }
 
 void	put_texture(t_data *data, int i)
@@ -110,8 +78,7 @@ void	put_texture(t_data *data, int i)
 	{
 		data->raycast->tex_y = (int)data->raycast->tex_p % PIXEL;
 		data->raycast->tex_p += step;
-		if (data->raycast->texture < DOOR || data->raycast->texture > DOOR + 4)
-			put_shade(data, i, y);
+		put_shade(data, i, y);
 		y++;
 	}
 }

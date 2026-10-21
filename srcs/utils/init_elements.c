@@ -16,8 +16,7 @@ static void	ft_set_doors(t_data *data, t_doors *door, int k, int j)
 {
 	door->x = k;
 	door->y = j;
-	door->is_open = 0;
-	door->has_been_open = 0;
+	door->state = D_CLOSED;
 	door->nb = ft_counter(data->map->map_tab, 'D');
 	door->anim_frame = 0;
 	door->last = 0;
@@ -56,6 +55,13 @@ int	ft_clean_init_elements(t_data *data)
 {
 	int	nb_doors;
 
+	data->mini.scale = MINI_SCALE;
+	data->mini.big_zoom = 1.0;
+	data->mini.rotate = 0;
+	data->mini.big = 0;
+	data->map->seen = ft_calloc(data->map->width * data->map->height, 1);
+	if (!data->map->seen)
+		return (1);
 	nb_doors = ft_counter(data->map->map_tab, 'D');
 	if (nb_doors == 0)
 		return (0);

@@ -77,7 +77,7 @@ int	ft_get_player_dir(t_data *data)
 	return (1);
 }
 
-// 0.5 est ajouté pour placer le joueur au centre de la case
+// 0.5 is added to put the player in the center of the cell
 int	ft_get_player_pos(t_data *data)
 {
 	size_t	i;

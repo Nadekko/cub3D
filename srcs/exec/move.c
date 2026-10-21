@@ -12,91 +12,69 @@
 
 #include "../../cub.h"
 
-int	key_release(int keycode, t_data *data)
+static int	is_blocked(t_data *data, double x, double y)
 {
-	if (keycode == KEY_Z || keycode == KEY_W)
-		data->move.z = 0;
-	if (keycode == KEY_Q || keycode == KEY_A)
-		data->move.q = 0;
-	if (keycode == KEY_S)
-		data->move.s = 0;
-	if (keycode == KEY_D)
-		data->move.d = 0;
-	return (0);
+	int	cell;
+
+	if (x < 0 || y < 0 || x >= data->map->width || y >= data->map->height)
+		return (1);
+	cell = data->map->map_int[(int)y][(int)x];
+	return (cell == 1 || cell == 4 || cell == 5);
 }
 
-int	key_press(int keycode, t_data *data)
+// checks the 4 corners of a hitbox around the player
+static int	is_valid_move(double x, double y, t_data *data)
 {
-	if (keycode == KEY_ESC)
-	{
-		data->exit = 1;
-		ft_free_data(data);
-	}
-	if (keycode == KEY_Z || keycode == KEY_W)
-		data->move.z = 1;
-	if (keycode == KEY_Q || keycode == KEY_A)
-		data->move.q = 1;
-	if (keycode == KEY_S)
-		data->move.s = 1;
-	if (keycode == KEY_D)
-		data->move.d = 1;
-	return (0);
+	return (!is_blocked(data, x - PLAYER_MARGIN, y - PLAYER_MARGIN)
+		&& !is_blocked(data, x + PLAYER_MARGIN, y - PLAYER_MARGIN)
+		&& !is_blocked(data, x - PLAYER_MARGIN, y + PLAYER_MARGIN)
+		&& !is_blocked(data, x + PLAYER_MARGIN, y + PLAYER_MARGIN)
+		&& !door_blocks(data, x, y));
 }
 
-static int	is_valid_move(double new_x, double new_y, t_data *data)
-{
-	int	map_x;
-	int	map_y;
-
-	if (new_x < 0 || new_x >= data->map->width || new_y < 0
-		|| new_y >= data->map->height)
-		return (0);
-	map_x = (int)new_x;
-	map_y = (int)new_y;
-	if (data->map->map_int[map_y][map_x] == 1 ||
-		data->map->map_int[(int)(new_y + 0.1)][map_x] == 1 ||
-		data->map->map_int[map_y][(int)(new_x + 0.1)] == 1)
-		return (0);
-	else if ((data->map->map_int[map_y][map_x] == 4
-		|| data->map->map_int[(int)(new_y + 0.1)][map_x] == 4
-		|| data->map->map_int[map_y][(int)(new_x + 0.1)] == 4)
-		&& data->doors->is_open == 0)
-		return (0);
-	return (1);
-}
-
-static void	get_new_position(t_data *data, double *new_x, double *new_y)
+static void	get_new_position(t_data *data, double *new_x, double *new_y,
+	double speed)
 {
 	*new_x = data->player->pos_x;
 	*new_y = data->player->pos_y;
 	if (data->move.z == 1)
 	{
-		*new_x += data->raycast->dir_x * MOVE_SPEED;
-		*new_y += data->raycast->dir_y * MOVE_SPEED;
+		*new_x += data->raycast->dir_x * speed;
+		*new_y += data->raycast->dir_y * speed;
 	}
 	if (data->move.s == 1)
 	{
-		*new_x -= data->raycast->dir_x * MOVE_SPEED;
-		*new_y -= data->raycast->dir_y * MOVE_SPEED;
+		*new_x -= data->raycast->dir_x * speed;
+		*new_y -= data->raycast->dir_y * speed;
 	}
 	if (data->move.q == 1)
 	{
-		*new_x -= data->raycast->plane_x * MOVE_SPEED;
-		*new_y -= data->raycast->plane_y * MOVE_SPEED;
+		*new_x -= data->raycast->plane_x * speed;
+		*new_y -= data->raycast->plane_y * speed;
 	}
 	if (data->move.d == 1)
 	{
-		*new_x += data->raycast->plane_x * MOVE_SPEED;
-		*new_y += data->raycast->plane_y * MOVE_SPEED;
+		*new_x += data->raycast->plane_x * speed;
+		*new_y += data->raycast->plane_y * speed;
 	}
 }
 
+// FPS-independent speed: distance = MOVE_SPEED * elapsed time
 int	ft_move(t_data *data)
 {
 	double	new_x;
 	double	new_y;
+	long	now;
+	double	dt;
 
-	get_new_position(data, &new_x, &new_y);
+	now = get_time_ms();
+	if (data->move.last == 0)
+		data->move.last = now;
+	dt = (now - data->move.last) / 1000.0;
+	data->move.last = now;
+	if (dt > 0.05)
+		dt = 0.05;
+	get_new_position(data, &new_x, &new_y, MOVE_SPEED * dt);
 	if (is_valid_move(new_x, data->player->pos_y, data))
 		data->player->pos_x = new_x;
 	if (is_valid_move(data->player->pos_x, new_y, data))
