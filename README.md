@@ -113,14 +113,13 @@ Moving or open doors are treated as a **transparent layer**: the ray keeps going
 
 Made by [andjenna](https://github.com/Nadekko) and ede-cola as part of the 42 Paris curriculum.
 
-| Asset | Source | Author |
-|-------|--------|--------|
-| Wall textures | TODO | TODO |
-| Doors | TODO | TODO |
-| Paws | TODO | TODO |
+**Assets** (some were modified for this project):
+- **Wall textures**: from *Wolfenstein 3D*, © id Software, and the [Dungeon/Temple tileset](https://apple-dog.itch.io/dungeont) by [AppleDog](https://apple-dog.itch.io/)
+- **Doors**: [Miscellaneous Pixel Assets](https://caniaeast.itch.io/miscellaneous-pixel-assets) by [CaniaEast](https://caniaeast.itch.io/)
+- **Paws**: redrawn by me over a GIF found online (original author unknown)
 
 Raycasting resource that helped a lot: [Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html).
 
 ## License
 
-The source code of this project is released under the [MIT License](LICENSE).
+The source code of this project is released under the [MIT License](LICENSE). The assets belong to their respective authors and are not covered by this license.
