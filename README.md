@@ -111,7 +111,7 @@ Moving or open doors are treated as a **transparent layer**: the ray keeps going
 
 ## Credits
 
-Made by [andjenna](https://github.com/Nadekko) and ede-cola as part of the 42 Paris curriculum.
+Made by [Nadekko](https://github.com/Nadekko) and [JahLioness](https://github.com/JahLioness) as part of the 42 Paris curriculum.
 
 **Assets** (some were modified for this project):
 - **Wall textures**: from *Wolfenstein 3D*, © id Software, and the [Dungeon/Temple tileset](https://apple-dog.itch.io/dungeont) by [AppleDog](https://apple-dog.itch.io/)
