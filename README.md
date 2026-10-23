@@ -55,8 +55,8 @@ make
 | W / Z, S | Move forward / backward |
 | A / Q, D | Strafe left / right |
 | Mouse | Look around |
-| Left click | Paw attack / open or close a door |
-| Mouse wheel | Zoom the minimap or the full-screen map |
+| Left click | Paw animation / open or close a door |
+| Scroll | Zoom the minimap or the full-screen map |
 | M | Open / close the full-screen map |
 | R | Toggle the rotating minimap |
 | TAB | Show / hide the debug HUD |
@@ -122,4 +122,9 @@ Raycasting resource that helped a lot: [Lode's Computer Graphics Tutorial](https
 
 ## License
 
-The source code of this project is released under the [MIT License](LICENSE). The assets belong to their respective authors and are not covered by this license.
+The source code of this project is released under the [MIT License](LICENSE).
+
+This license does not cover third-party content:
+
+- The game assets belong to their respective authors and are subject to the licenses listed on their itch.io pages (see [Credits](#credits)).
+- MiniLibX is provided by 42 and distributed under its own license; see its repository for details.
