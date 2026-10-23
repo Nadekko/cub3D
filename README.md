@@ -87,7 +87,7 @@ C 104,63,199
 | Character | Meaning |
 |-----------|---------|
 | `1` / `0` | Wall / empty floor |
-| `N` / `S` / `E` / `W` | Player start and direction (exactly one) |
+| `N` / `S` / `E` / `W` | Player start and direction (exactly one of each) |
 | `D` | Door |
 
 The map must be closed by walls. Any invalid file is rejected with an `Error` message.
