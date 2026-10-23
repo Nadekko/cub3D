@@ -106,9 +106,9 @@ Moving or open doors are treated as a **transparent layer**: the ray keeps going
 
 ## Known issues
 
-Valgrind reports no leaks in the project's code (`definitely lost: 0`), but it does show a few X11 messages:
-- **still reachable** blocks: hiding the cursor with `mlx_mouse_hide` makes libX11 load its locale and resource caches, which it never frees, even after the display is closed
-- **`writev` points to uninitialised byte(s)**: a known libxcb false positive, triggered by `mlx_loop`
+Valgrind reports no leaks in the project's code (`definitely lost: 0`), but hiding the cursor with MiniLibX's `mlx_mouse_hide` causes two messages:
+- **still reachable** blocks: libX11 loads its locale and resource caches, which it never frees, even after the display is closed
+- **`writev` points to uninitialised byte(s)**: `mlx_mouse_hide` passes an uninitialised `XColor` to `XCreatePixmapCursor`. The request is only sent to the X server later, which is why Valgrind reports it in `mlx_loop`
 
 ## Roadmap
 
