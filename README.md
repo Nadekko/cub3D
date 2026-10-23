@@ -116,7 +116,7 @@ Made by [andjenna](https://github.com/Nadekko) and ede-cola as part of the 42 Pa
 **Assets** (some were modified for this project):
 - **Wall textures**: from *Wolfenstein 3D*, © id Software, and the [Dungeon/Temple tileset](https://apple-dog.itch.io/dungeont) by [AppleDog](https://apple-dog.itch.io/)
 - **Doors**: [Miscellaneous Pixel Assets](https://caniaeast.itch.io/miscellaneous-pixel-assets) by [CaniaEast](https://caniaeast.itch.io/)
-- **Paws**: redrawn by me over a GIF found online (original author unknown)
+- **Paws**: partially redrawn from the [*Paw Kitten*](https://tenor.com/view/paw-kitten-highfive-wave-cat-gif-5182489) GIF on Tenor (original author unknown)
 
 Raycasting resource that helped a lot: [Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html).
 
