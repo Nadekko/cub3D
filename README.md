@@ -79,7 +79,7 @@ C 104,63,199
 
 1111111111111
 1000000000001
-1011100D11101
+1111111D11111
 10000000000N1
 1111111111111
 ```
@@ -87,7 +87,7 @@ C 104,63,199
 | Character | Meaning |
 |-----------|---------|
 | `1` / `0` | Wall / empty floor |
-| `N` / `S` / `E` / `W` | Player start and direction (exactly one of each) |
+| `N` / `S` / `E` / `W` | Player start and direction (exactly one) |
 | `D` | Door |
 
 The map must be closed by walls. Any invalid file is rejected with an `Error` message.
@@ -126,5 +126,5 @@ The source code of this project is released under the [MIT License](LICENSE).
 
 This license does not cover third-party content:
 
-- The game assets belong to their respective authors and are subject to the licenses listed on their itch.io pages (see [Credits](#credits)).
+- The game assets belong to their respective authors and remain subject to their original terms (see [Credits](#credits)).
 - MiniLibX is provided by 42 and distributed under its own license; see its repository for details.
