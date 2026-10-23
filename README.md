@@ -126,5 +126,5 @@ The source code of this project is released under the [MIT License](LICENSE).
 
 This license does not cover third-party content:
 
-- The game assets belong to their respective authors and remain subject to their original terms (see [Credits](#credits)).
+- The game assets belong to their respective authors and remain subject to their original terms.
 - MiniLibX is provided by 42 and distributed under its own license; see its repository for details.
