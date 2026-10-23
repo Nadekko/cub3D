@@ -55,8 +55,8 @@ make
 | W / Z, S | Move forward / backward |
 | A / Q, D | Strafe left / right |
 | Mouse | Look around |
-| Left click | Paw attack / open or close a door |
-| Mouse wheel | Zoom the minimap or the full-screen map |
+| Left click | Paw animation / open or close a door |
+| Scroll | Zoom the minimap or the full-screen map |
 | M | Open / close the full-screen map |
 | R | Toggle the rotating minimap |
 | TAB | Show / hide the debug HUD |
@@ -87,7 +87,7 @@ C 104,63,199
 | Character | Meaning |
 |-----------|---------|
 | `1` / `0` | Wall / empty floor |
-| `N` / `S` / `E` / `W` | Player start and direction (exactly one) |
+| `N` / `S` / `E` / `W` | Player start and direction (exactly one of each) |
 | `D` | Door |
 
 The map must be closed by walls. Any invalid file is rejected with an `Error` message.
@@ -111,15 +111,20 @@ Moving or open doors are treated as a **transparent layer**: the ray keeps going
 
 ## Credits
 
-Made by [andjenna](https://github.com/Nadekko) and ede-cola as part of the 42 Paris curriculum.
+Made by [Nadekko](https://github.com/Nadekko) and [JahLioness](https://github.com/JahLioness) as part of the 42 Paris curriculum.
 
 **Assets** (some were modified for this project):
 - **Wall textures**: from *Wolfenstein 3D*, © id Software, and the [Dungeon/Temple tileset](https://apple-dog.itch.io/dungeont) by [AppleDog](https://apple-dog.itch.io/)
 - **Doors**: [Miscellaneous Pixel Assets](https://caniaeast.itch.io/miscellaneous-pixel-assets) by [CaniaEast](https://caniaeast.itch.io/)
-- **Paws**: partially redrawn from the [*Paw Kitten*](https://tenor.com/view/paw-kitten-highfive-wave-cat-gif-5182489) GIF on Tenor (original author unknown)
+- **Paws**: partially redrawn from the [Paw Kitten](https://tenor.com/view/paw-kitten-highfive-wave-cat-gif-5182489) GIF on Tenor (original author unknown)
 
 Raycasting resource that helped a lot: [Lode's Computer Graphics Tutorial](https://lodev.org/cgtutor/raycasting.html).
 
 ## License
 
-The source code of this project is released under the [MIT License](LICENSE). The assets belong to their respective authors and are not covered by this license.
+The source code of this project is released under the [MIT License](LICENSE).
+
+This license does not cover third-party content:
+
+- The game assets belong to their respective authors and are subject to the licenses listed on their itch.io pages (see [Credits](#credits)).
+- MiniLibX is provided by 42 and distributed under its own license; see its repository for details.
