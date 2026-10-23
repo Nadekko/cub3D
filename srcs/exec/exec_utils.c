@@ -89,7 +89,7 @@ int	ft_get_player_pos(t_data *data)
 		j = 0;
 		while (j < ft_strlen(data->map->map_tab[i]))
 		{
-			if (data->map->map_int[i][j] == 3)
+			if (ft_strchr("NSWE", data->map->map_tab[i][j]))
 			{
 				data->player->pos_y = (double)i + 0.5;
 				data->player->pos_x = (double)j + 0.5;

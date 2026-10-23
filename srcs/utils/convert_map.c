@@ -12,7 +12,7 @@
 
 #include "../../cub.h"
 
-static int	ft_get_max_width(char **map)
+int	ft_get_max_width(char **map)
 {
 	int	max_width;
 	int	i;

@@ -104,6 +104,12 @@ Moving or open doors are treated as a **transparent layer**: the ray keeps going
 - Rendering see-through animated doors without hiding the walls behind them
 - Keeping everything smooth on the CPU while staying within the Norm
 
+## Known issues
+
+Valgrind reports no leaks in the project's code (`definitely lost: 0`), but it does show a few X11 messages:
+- **still reachable** blocks: hiding the cursor with `mlx_mouse_hide` makes libX11 load its locale and resource caches, which it never frees, even after the display is closed
+- **`writev` points to uninitialised byte(s)**: a known libxcb false positive, triggered by `mlx_loop`
+
 ## Roadmap
 
 - Light sources, floor and ceiling textures

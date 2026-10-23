@@ -303,6 +303,7 @@ t_img			*ft_init_img(t_mlx *mlx, char *path);
 t_img			*ft_init_new_img(t_mlx *mlx, int width, int height);
 
 /*		CONVERT_MAP			*/
+int				ft_get_max_width(char **map);
 int				**ft_convert_map(char **map);
 
 /*		RAYCASTING		*/
