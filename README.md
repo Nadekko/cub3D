@@ -5,12 +5,12 @@ Cub3D is a project from the 42 Paris Common Core: a first-person 3D game written
 You explore a cozy, slightly eerie maze through the eyes of a cat: soft pink-violet fog, warm light, and paws swiping at the screen. Doors slide open (and closed), and the map slowly reveals itself as you explore.
 
 <p align="center">
-  <img src="demo/demo_explore.gif" width="45%" alt="Exploring the maze">
-  <img src="demo/demo_doors.gif" width="45%" alt="Opening and closing doors">
+  <img src="demo/doors.gif" width="45%" alt="Opening and closing doors">
+  <img src="demo/rotation_map.gif" width="45%" alt="Rotating minimap">
 </p>
 <p align="center">
-  <img src="demo/demo_minimap.gif" width="45%" alt="Minimap with fog of war">
-  <img src="demo/demo_big_map.gif" width="45%" alt="Full-screen map">
+  <img src="demo/map_explorer.gif" width="45%" alt="Full-screen map revealed by exploration">
+  <img src="demo/map_zoom.gif" width="45%" alt="Zooming the full-screen map">
 </p>
 
 ## Features
@@ -27,7 +27,7 @@ You explore a cozy, slightly eerie maze through the eyes of a cat: soft pink-vio
 - Full-screen zoomable map
 - Animated paw attack on click
 - Ambiance: distance fog, warm light tint, directional wall shading and vignette
-- Frame-rate–independent movement and a debug HUD (FPS, position, door state...)
+- Frame-rate–independent movement and a HUD (FPS, frame time and shortcuts)
 
 ## Installation
 

@@ -68,7 +68,7 @@ void	hud_darken(t_img *img, int x0, int y0)
 		{
 			px = (unsigned int *)(img->addr + y * img->line_len
 					+ x * (img->bpp / 8));
-			*px = (*px >> 2) & 0x3F3F3F;
+			*px = (*px >> 1) & 0x7F7F7F;
 			x++;
 		}
 		y++;

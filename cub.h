@@ -25,7 +25,7 @@
 # define FOV 0.66
 // MOVE
 # define ROT_SPEED 0.02
-# define MOVE_SPEED 3.0 // cells per second
+# define MOVE_SPEED 2.0 // cells per second
 # define PLAYER_MARGIN 0.2
 # define KEY_W 119
 # define KEY_A 97
@@ -74,7 +74,7 @@
 # define DOOR_FRAME_MS 100
 
 # define HUD_W 190
-# define HUD_LINES 7
+# define HUD_LINES 5
 # define HUD_LINE_H 16
 # define HUD_BUF 64
 
@@ -82,9 +82,9 @@
 # define FOG_COLOR 0xa07ca8
 # define FOG_DENSITY 0.12
 # define LIGHT_COLOR 0xfff0e6
-# define SIDE_LIGHT 0.8
-# define CEIL_LIGHT 0.7
-# define FLOOR_LIGHT 0.9
+# define SIDE_LIGHT 0.7
+# define CEIL_LIGHT 0.6
+# define FLOOR_LIGHT 0.8
 # define VIGNETTE 0.3
 
 # define D_CLOSED 0
